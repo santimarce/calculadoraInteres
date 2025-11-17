@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Interés Simple</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <p class="hero__badge">Proyecto académico</p>
+      <h1>Calculadora de interés simple</h1>
+      <p class="hero__subtitle">Experimenta con diferentes incógnitas (C, i, n o I) usando la fórmula de interés simple y valida tu resultado antes de ver la solución.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#calculadora">Ir a la calculadora</a>
+        <a class="btn btn--ghost" href="#features">Explorar funcionalidades</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="features" class="features">
+      <div class="section-header">
+        <p class="eyebrow">Resumen</p>
+        <h2>Las tres secciones de la app</h2>
+        <p class="section-description">Navega por las tarjetas para conocer lo que hace cada sección. La primera ya está lista para que practiques con la fórmula de interés simple.</p>
+      </div>
+      <div class="feature-grid">
+        <article class="card">
+          <div class="card__header">
+            <span class="card__tag">Sección 1</span>
+            <h3>Calculadora de interés simple</h3>
+          </div>
+          <p>Ingresa tus datos, selecciona la incógnita (C, i, n o I) y valida tu respuesta con el botón de evaluación.</p>
+          <a class="card__link" href="#calculadora">Probar ahora →</a>
+        </article>
+        <article class="card card--muted">
+          <div class="card__header">
+            <span class="card__tag">Sección 2</span>
+            <h3>Comparativa de escenarios</h3>
+          </div>
+          <p>Próximamente: visualiza cómo cambian los resultados al modificar una variable clave.</p>
+          <span class="card__link card__link--disabled">En construcción</span>
+        </article>
+        <article class="card card--muted">
+          <div class="card__header">
+            <span class="card__tag">Sección 3</span>
+            <h3>Guía interactiva</h3>
+          </div>
+          <p>Próximamente: pasos guiados para seleccionar la fórmula correcta y evitar errores comunes.</p>
+          <span class="card__link card__link--disabled">En construcción</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="calculadora" class="calculator">
+      <div class="section-header">
+        <p class="eyebrow">Sección 1</p>
+        <h2>Calcula cualquier incógnita de interés simple</h2>
+        <p class="section-description">Completa los campos conocidos, escribe la fórmula que usarás, indica la incógnita que deseas calcular y coloca tu resultado propuesto. Luego presiona el botón de evaluación para validar.</p>
+      </div>
+      <form class="calc-form" id="interest-form" novalidate>
+        <div class="form-grid">
+          <label class="form-field">
+            <span>Capital (C)</span>
+            <input type="number" id="capital" name="capital" placeholder="Ej. 15000" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Tasa de interés anual (%) (i)</span>
+            <input type="number" id="rate" name="rate" placeholder="Ej. 12" min="0" step="0.0001">
+          </label>
+          <label class="form-field">
+            <span>Tiempo en años (n)</span>
+            <input type="number" id="time" name="time" placeholder="Ej. 2" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Interés generado (I)</span>
+            <input type="number" id="interest" name="interest" placeholder="Ej. 3600" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Incógnita a calcular</span>
+            <select id="unknown" name="unknown" required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="capital">Capital (C)</option>
+              <option value="rate">Tasa (i)</option>
+              <option value="time">Tiempo (n)</option>
+              <option value="interest">Interés (I)</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <span>Fórmula que vas a usar</span>
+            <input type="text" id="formula" name="formula" placeholder="Ej. I = C · i · n" maxlength="60">
+          </label>
+          <label class="form-field form-field--full">
+            <span>Tu resultado para la incógnita seleccionada</span>
+            <input type="number" id="user-result" name="user-result" placeholder="Ingresa tu cálculo" min="0" step="0.0001" required>
+          </label>
+        </div>
+        <p class="form-hint">Los valores deben ser numéricos, positivos y distintos de cero. Deja en blanco la casilla de la incógnita que vas a calcular.</p>
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Evaluar respuesta</button>
+          <button type="reset" class="btn btn--ghost" id="reset-btn">Limpiar</button>
+        </div>
+        <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Hecho para practicar cálculo de interés simple.</p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
