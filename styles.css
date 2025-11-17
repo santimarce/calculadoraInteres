@@ -195,10 +195,6 @@ main {
   gap: 14px;
 }
 
-.form-grid--three {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
 .form-field {
   display: flex;
   flex-direction: column;
@@ -262,58 +258,6 @@ input:focus, select:focus {
 .feedback--info {
   border-color: rgba(56, 189, 248, 0.35);
   background: rgba(56, 189, 248, 0.08);
-}
-
-.calculator--wide .calc-form {
-  max-width: 1100px;
-}
-
-.results {
-  margin-top: 24px;
-  padding: 18px;
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(14, 165, 233, 0.05));
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-}
-
-.results__header {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-bottom: 14px;
-}
-
-.results__note { color: var(--subtext); max-width: 420px; }
-
-.table-wrapper {
-  overflow-x: auto;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 520px;
-}
-
-.data-table th,
-.data-table td {
-  padding: 12px 14px;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-}
-
-.data-table thead {
-  background: rgba(255, 255, 255, 0.05);
-  color: #e2e8f0;
-}
-
-.data-table tbody tr:nth-child(odd) {
-  background: rgba(255, 255, 255, 0.02);
 }
 
 .footer {

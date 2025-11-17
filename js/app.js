@@ -1,37 +1,34 @@
 import InterestCalculator from './interestCalculator.js';
-import CompoundCalculator from './compoundCalculator.js';
-import LoanSimulator from './loanSimulator.js';
+
+const form = document.getElementById('interest-form');
+const feedback = document.getElementById('feedback');
+const resetBtn = document.getElementById('reset-btn');
+
+function clearFeedback() {
+  feedback.textContent = '';
+  feedback.className = 'feedback';
+}
+
+function showFeedback(message, type = 'info') {
+  feedback.textContent = message;
+  feedback.className = `feedback feedback--${type}`;
+}
 
 function parsePositiveNumber(value) {
   const parsed = parseFloat(value);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
 }
 
-function clearFeedback(feedbackEl) {
-  if (!feedbackEl) return;
-  feedbackEl.textContent = '';
-  feedbackEl.className = 'feedback';
-}
-
-function showFeedback(feedbackEl, message, type = 'info') {
-  if (!feedbackEl) return;
-  feedbackEl.textContent = message;
-  feedbackEl.className = `feedback feedback--${type}`;
-}
-
-function formatMoney(value) {
-  return value.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-// --- Interés simple ---
-const simpleForm = document.getElementById('interest-form');
-const simpleFeedback = document.getElementById('feedback');
-const simpleResetBtn = document.getElementById('reset-btn');
-
-function validateSimple({ capital, ratePercent, timeYears, interest, unknown, formula, userResult }) {
-  if (!unknown) return 'Selecciona la incógnita que deseas calcular.';
-  if (!formula.trim()) return 'Escribe la fórmula que vas a usar.';
-  if (userResult === null) return 'Ingresa el valor que calculaste para la incógnita.';
+function validateFields({ capital, ratePercent, timeYears, interest, unknown, formula, userResult }) {
+  if (!unknown) {
+    return 'Selecciona la incógnita que deseas calcular.';
+  }
+  if (!formula.trim()) {
+    return 'Escribe la fórmula que vas a usar.';
+  }
+  if (userResult === null) {
+    return 'Ingresa el valor que calculaste para la incógnita.';
+  }
 
   const requirements = {
     capital: [interest, ratePercent, timeYears],
@@ -41,12 +38,14 @@ function validateSimple({ capital, ratePercent, timeYears, interest, unknown, fo
   };
 
   const missingKnown = requirements[unknown].some((value) => value === null);
-  if (missingKnown) return 'Completa todos los valores conocidos con números positivos.';
+  if (missingKnown) {
+    return 'Completa todos los valores conocidos con números positivos.';
+  }
 
   return '';
 }
 
-function buildSimpleSummary({ unknown, computed }) {
+function buildSummary({ unknown, computed }) {
   const labelMap = {
     capital: 'Capital (C)',
     rate: 'Tasa (i)',
@@ -58,227 +57,42 @@ function buildSimpleSummary({ unknown, computed }) {
   return `${labelMap[unknown]} esperado: ${formatted}${unit}`;
 }
 
-function handleSimpleSubmit(event) {
+function handleSubmit(event) {
   event.preventDefault();
-  if (!simpleForm) return;
 
-  const capital = parsePositiveNumber(simpleForm.capital.value);
-  const ratePercent = parsePositiveNumber(simpleForm.rate.value);
-  const timeYears = parsePositiveNumber(simpleForm.time.value);
-  const interest = parsePositiveNumber(simpleForm.interest.value);
-  const unknown = simpleForm.unknown.value;
-  const formula = simpleForm.formula.value || '';
-  const userResult = parsePositiveNumber(simpleForm['user-result'].value);
+  const capital = parsePositiveNumber(form.capital.value);
+  const ratePercent = parsePositiveNumber(form.rate.value);
+  const timeYears = parsePositiveNumber(form.time.value);
+  const interest = parsePositiveNumber(form.interest.value);
+  const unknown = form.unknown.value;
+  const formula = form.formula.value || '';
+  const userResult = parsePositiveNumber(form['user-result'].value);
 
-  const error = validateSimple({ capital, ratePercent, timeYears, interest, unknown, formula, userResult });
-  if (error) return showFeedback(simpleFeedback, error, 'error');
+  const error = validateFields({ capital, ratePercent, timeYears, interest, unknown, formula, userResult });
+  if (error) {
+    showFeedback(error, 'error');
+    return;
+  }
 
   let computed;
   try {
     computed = InterestCalculator.compute({ unknown, capital, ratePercent, timeYears, interest });
   } catch (err) {
-    return showFeedback(simpleFeedback, 'Ocurrió un problema al calcular. Revisa los datos ingresados.', 'error');
+    showFeedback('Ocurrió un problema al calcular. Revisa los datos ingresados.', 'error');
+    return;
   }
 
   const tolerance = Math.max(0.0001, Math.abs(computed) * 0.005);
   const isCorrect = Math.abs(computed - userResult) <= tolerance;
-  const summary = buildSimpleSummary({ unknown, computed });
 
+  const summary = buildSummary({ unknown, computed });
   if (isCorrect) {
-    showFeedback(simpleFeedback, `¡Bien! Tu resultado está dentro del margen esperado. ${summary}`, 'success');
+    showFeedback(`¡Bien! Tu resultado está dentro del margen esperado. ${summary}`, 'success');
   } else {
     const diff = Math.abs(computed - userResult).toFixed(4);
-    showFeedback(simpleFeedback, `El resultado no coincide. ${summary}. Diferencia observada: ${diff}.`, 'error');
+    showFeedback(`El resultado no coincide. ${summary}. Diferencia observada: ${diff}.`, 'error');
   }
 }
 
-if (simpleForm) {
-  simpleForm.addEventListener('submit', handleSimpleSubmit);
-  simpleResetBtn?.addEventListener('click', () => clearFeedback(simpleFeedback));
-}
-
-// --- Interés compuesto ---
-const compoundForm = document.getElementById('compound-form');
-const compoundFeedback = document.getElementById('compound-feedback');
-const compoundResetBtn = document.getElementById('compound-reset');
-
-function validateCompound({
-  capital,
-  ratePercent,
-  timeYears,
-  frequency,
-  amount,
-  unknown,
-  formula,
-  userResult,
-}) {
-  if (!unknown) return 'Selecciona la incógnita que deseas calcular.';
-  if (!formula.trim()) return 'Escribe la fórmula que vas a usar.';
-  if (userResult === null) return 'Ingresa el valor que calculaste para la incógnita.';
-
-  const requirements = {
-    capital: [amount, ratePercent, timeYears, frequency],
-    rate: [amount, capital, timeYears, frequency],
-    time: [amount, capital, ratePercent, frequency],
-    amount: [capital, ratePercent, timeYears, frequency],
-    interest: [capital, ratePercent, timeYears, frequency],
-  };
-
-  const missingKnown = requirements[unknown].some((value) => value === null);
-  if (missingKnown) return 'Completa todos los valores conocidos con números positivos.';
-
-  return '';
-}
-
-function buildCompoundSummary({ unknown, computed }) {
-  const labelMap = {
-    capital: 'Capital (C)',
-    rate: 'Tasa (i)',
-    time: 'Tiempo (n)',
-    amount: 'Monto final (M)',
-    interest: 'Interés (I)',
-  };
-  const unit = unknown === 'rate' ? '%' : '';
-  let formatted = computed;
-  if (unknown === 'rate') {
-    formatted = computed.toFixed(4);
-  } else if (unknown === 'time') {
-    formatted = computed.toFixed(3);
-  } else {
-    formatted = computed.toFixed(2);
-  }
-  return `${labelMap[unknown]} esperado: ${formatted}${unit}`;
-}
-
-function handleCompoundSubmit(event) {
-  event.preventDefault();
-  if (!compoundForm) return;
-
-  const capital = parsePositiveNumber(compoundForm['c-capital'].value);
-  const ratePercent = parsePositiveNumber(compoundForm['c-rate'].value);
-  const timeYears = parsePositiveNumber(compoundForm['c-time'].value);
-  const frequency = parsePositiveNumber(compoundForm['c-frequency'].value);
-  const amountInput = parsePositiveNumber(compoundForm['c-amount'].value);
-  const interest = parsePositiveNumber(compoundForm['c-interest'].value);
-  const amount = amountInput ?? (interest !== null && capital !== null ? capital + interest : null);
-  const unknown = compoundForm['c-unknown'].value;
-  const formula = compoundForm['c-formula'].value || '';
-  const userResult = parsePositiveNumber(compoundForm['c-user-result'].value);
-
-  const error = validateCompound({ capital, ratePercent, timeYears, frequency, amount, unknown, formula, userResult });
-  if (error) return showFeedback(compoundFeedback, error, 'error');
-
-  let computed;
-  try {
-    computed = CompoundCalculator.compute({ unknown, capital, ratePercent, timeYears, frequency, amount });
-  } catch (err) {
-    return showFeedback(compoundFeedback, 'Ocurrió un problema al calcular. Revisa los datos ingresados.', 'error');
-  }
-
-  const tolerance = Math.max(0.0001, Math.abs(computed) * 0.005);
-  const isCorrect = Math.abs(computed - userResult) <= tolerance;
-  const summary = buildCompoundSummary({ unknown, computed });
-
-  if (isCorrect) {
-    showFeedback(compoundFeedback, `¡Bien! Tu resultado está dentro del margen esperado. ${summary}`, 'success');
-  } else {
-    const diff = Math.abs(computed - userResult).toFixed(4);
-    showFeedback(compoundFeedback, `El resultado no coincide. ${summary}. Diferencia observada: ${diff}.`, 'error');
-  }
-}
-
-if (compoundForm) {
-  compoundForm.addEventListener('submit', handleCompoundSubmit);
-  compoundResetBtn?.addEventListener('click', () => clearFeedback(compoundFeedback));
-}
-
-// --- Simulador de crédito ---
-const loanForm = document.getElementById('loan-form');
-const loanFeedback = document.getElementById('loan-feedback');
-const loanResetBtn = document.getElementById('loan-reset');
-const loanResults = document.getElementById('loan-results');
-const loanTbody = document.getElementById('loan-tbody');
-const loanSummary = document.getElementById('loan-summary');
-const loanMethodLabel = document.getElementById('loan-method-label');
-
-function validateLoan({ amount, ratePercent, years, frequency, method, formula }) {
-  if (!method) return 'Selecciona el tipo de tabla que deseas usar.';
-  if (!formula.trim()) return 'Escribe la fórmula o referencia que usarás para el cálculo.';
-
-  const values = [amount, ratePercent, years, frequency];
-  const hasInvalid = values.some((value) => value === null || value <= 0);
-  if (hasInvalid) return 'Completa monto, tasa, tiempo y pagos por año con números positivos.';
-
-  return '';
-}
-
-function renderSchedule(schedule) {
-  if (!loanTbody) return;
-  loanTbody.innerHTML = schedule
-    .map((row) => `
-      <tr>
-        <td>${row.period}</td>
-        <td>${formatMoney(row.payment)}</td>
-        <td>${formatMoney(row.principal)}</td>
-        <td>${formatMoney(row.interest)}</td>
-        <td>${formatMoney(row.balance)}</td>
-      </tr>
-    `)
-    .join('');
-}
-
-function handleLoanSubmit(event) {
-  event.preventDefault();
-  if (!loanForm) return;
-
-  const amount = parsePositiveNumber(loanForm['l-amount'].value);
-  const ratePercent = parsePositiveNumber(loanForm['l-rate'].value);
-  const years = parsePositiveNumber(loanForm['l-years'].value);
-  const frequency = parsePositiveNumber(loanForm['l-frequency'].value);
-  const method = loanForm['l-method'].value;
-  const formula = loanForm['l-formula'].value || '';
-
-  const error = validateLoan({ amount, ratePercent, years, frequency, method, formula });
-  if (error) {
-    loanResults?.setAttribute('hidden', '');
-    return showFeedback(loanFeedback, error, 'error');
-  }
-
-  let schedule;
-  try {
-    schedule = LoanSimulator.buildSchedule({ amount, ratePercent, years, frequency, method });
-  } catch (err) {
-    loanResults?.setAttribute('hidden', '');
-    return showFeedback(loanFeedback, 'No se pudo generar la tabla. Revisa los datos ingresados.', 'error');
-  }
-
-  if (!schedule.length) {
-    loanResults?.setAttribute('hidden', '');
-    return showFeedback(loanFeedback, 'No se generaron registros. Ajusta los valores e intenta nuevamente.', 'error');
-  }
-
-  showFeedback(loanFeedback, `Tabla generada: ${schedule.length} pagos.`, 'success');
-  renderSchedule(schedule);
-
-  const totalPaid = schedule.reduce((acc, row) => acc + row.payment, 0);
-  const totalInterest = schedule.reduce((acc, row) => acc + row.interest, 0);
-  const methodLabel = method === 'francesa' ? 'Tabla francesa (cuota constante)' : 'Tabla alemana (cuota decreciente)';
-
-  if (loanSummary) {
-    loanSummary.textContent = `Total pagado: ${formatMoney(totalPaid)} • Interés: ${formatMoney(totalInterest)}`;
-  }
-  if (loanMethodLabel) {
-    loanMethodLabel.textContent = methodLabel;
-  }
-
-  loanResults?.removeAttribute('hidden');
-}
-
-if (loanForm) {
-  loanForm.addEventListener('submit', handleLoanSubmit);
-  loanResetBtn?.addEventListener('click', () => {
-    clearFeedback(loanFeedback);
-    loanResults?.setAttribute('hidden', '');
-    if (loanTbody) loanTbody.innerHTML = '';
-  });
-}
+form.addEventListener('submit', handleSubmit);
+resetBtn.addEventListener('click', clearFeedback);
