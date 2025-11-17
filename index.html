@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadoras de Interés</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <p class="hero__badge">Proyecto académico</p>
+      <h1>Calculadoras de interés</h1>
+      <p class="hero__subtitle">Experimenta con diferentes incógnitas en interés simple y compuesto, escribe la fórmula y valida
+ tu resultado antes de ver la solución.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#calculadora">Interés simple</a>
+        <a class="btn btn--ghost" href="#compuesto">Interés compuesto</a>
+        <a class="btn btn--ghost" href="#credito">Simulador de crédito</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="features" class="features">
+      <div class="section-header">
+        <p class="eyebrow">Resumen</p>
+        <h2>Las tres secciones de la app</h2>
+        <p class="section-description">Navega por las tarjetas para conocer lo que hace cada sección. Las secciones 1, 2 y 3 están listas para practicar.</p>
+      </div>
+      <div class="feature-grid">
+        <article class="card">
+          <div class="card__header">
+            <span class="card__tag">Sección 1</span>
+            <h3>Calculadora de interés simple</h3>
+          </div>
+          <p>Ingresa tus datos, selecciona la incógnita (C, i, n o I) y valida tu respuesta con el botón de evaluación.</p>
+          <a class="card__link" href="#calculadora">Probar ahora →</a>
+        </article>
+        <article class="card">
+          <div class="card__header">
+            <span class="card__tag">Sección 2</span>
+            <h3>Calculadora de interés compuesto</h3>
+          </div>
+          <p>Calcula C, i, n, M o I con capitalización m. Ingresa los datos, escribe la fórmula y verifica tu resultado.</p>
+          <a class="card__link" href="#compuesto">Ir a la sección →</a>
+        </article>
+        <article class="card">
+          <div class="card__header">
+            <span class="card__tag">Sección 3</span>
+            <h3>Simulador de crédito</h3>
+          </div>
+          <p>Simula créditos con tabla francesa o alemana, revisa cuotas, interés y capital amortizado en cada pago.</p>
+          <a class="card__link" href="#credito">Explorar sección →</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="calculadora" class="calculator">
+      <div class="section-header">
+        <p class="eyebrow">Sección 1</p>
+        <h2>Calcula cualquier incógnita de interés simple</h2>
+        <p class="section-description">Completa los campos conocidos, escribe la fórmula que usarás, indica la incógnita que des
+ eas calcular y coloca tu resultado propuesto. Luego presiona el botón de evaluación para validar.</p>
+      </div>
+      <form class="calc-form" id="interest-form" novalidate>
+        <div class="form-grid">
+          <label class="form-field">
+            <span>Capital (C)</span>
+            <input type="number" id="capital" name="capital" placeholder="Ej. 15000" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Tasa de interés anual (%) (i)</span>
+            <input type="number" id="rate" name="rate" placeholder="Ej. 12" min="0" step="0.0001">
+          </label>
+          <label class="form-field">
+            <span>Tiempo en años (n)</span>
+            <input type="number" id="time" name="time" placeholder="Ej. 2" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Interés generado (I)</span>
+            <input type="number" id="interest" name="interest" placeholder="Ej. 3600" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Incógnita a calcular</span>
+            <select id="unknown" name="unknown" required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="capital">Capital (C)</option>
+              <option value="rate">Tasa (i)</option>
+              <option value="time">Tiempo (n)</option>
+              <option value="interest">Interés (I)</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <span>Fórmula que vas a usar</span>
+            <input type="text" id="formula" name="formula" placeholder="Ej. I = C · i · n" maxlength="60">
+          </label>
+          <label class="form-field form-field--full">
+            <span>Tu resultado para la incógnita seleccionada</span>
+            <input type="number" id="user-result" name="user-result" placeholder="Ingresa tu cálculo" min="0" step="0.0001" requ
+ired>
+          </label>
+        </div>
+        <p class="form-hint">Los valores deben ser numéricos, positivos y distintos de cero. Deja en blanco la casilla de la inc
+ógnita que vas a calcular.</p>
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Evaluar respuesta</button>
+          <button type="reset" class="btn btn--ghost" id="reset-btn">Limpiar</button>
+        </div>
+        <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section id="compuesto" class="calculator">
+      <div class="section-header">
+        <p class="eyebrow">Sección 2</p>
+        <h2>Calcula cualquier incógnita de interés compuesto</h2>
+        <p class="section-description">Ingresa los valores conocidos, selecciona la variable a resolver (C, i, n, M o I), escribe
+ la fórmula y valida tu cálculo con el botón de evaluación.</p>
+      </div>
+      <form class="calc-form" id="compound-form" novalidate>
+        <div class="form-grid">
+          <label class="form-field">
+            <span>Capital (C)</span>
+            <input type="number" id="c-capital" name="c-capital" placeholder="Ej. 15000" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Tasa de interés anual (%) (i)</span>
+            <input type="number" id="c-rate" name="c-rate" placeholder="Ej. 10" min="0" step="0.0001">
+          </label>
+          <label class="form-field">
+            <span>Tiempo en años (n)</span>
+            <input type="number" id="c-time" name="c-time" placeholder="Ej. 3" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Capitalización por año (m)</span>
+            <input type="number" id="c-frequency" name="c-frequency" placeholder="Ej. 4" min="0" step="1">
+          </label>
+          <label class="form-field">
+            <span>Monto final (M)</span>
+            <input type="number" id="c-amount" name="c-amount" placeholder="Ej. 18350" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Interés generado (I)</span>
+            <input type="number" id="c-interest" name="c-interest" placeholder="Ej. 3350" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Incógnita a calcular</span>
+            <select id="c-unknown" name="c-unknown" required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="capital">Capital (C)</option>
+              <option value="rate">Tasa (i)</option>
+              <option value="time">Tiempo (n)</option>
+              <option value="amount">Monto final (M)</option>
+              <option value="interest">Interés (I)</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <span>Fórmula que vas a usar</span>
+            <input type="text" id="c-formula" name="c-formula" placeholder="Ej. M = C (1 + i/m)^(n·m)" maxlength="70">
+          </label>
+          <label class="form-field form-field--full">
+            <span>Tu resultado para la incógnita seleccionada</span>
+            <input type="number" id="c-user-result" name="c-user-result" placeholder="Ingresa tu cálculo" min="0" step="0.0001"
+ required>
+          </label>
+        </div>
+        <p class="form-hint">Introduce valores numéricos, positivos y diferentes de cero. Deja vacía la casilla de la incógnita
+ que resolverás; para I se calculará a partir de C, i, n y m.</p>
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Evaluar respuesta</button>
+          <button type="reset" class="btn btn--ghost" id="compound-reset">Limpiar</button>
+        </div>
+        <div class="feedback" id="compound-feedback" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section id="credito" class="calculator calculator--wide">
+      <div class="section-header">
+        <p class="eyebrow">Sección 3</p>
+        <h2>Simula un crédito con tabla francesa o alemana</h2>
+        <p class="section-description">Ingresa el monto, tasa anual, duración y pagos por año. Elige la tabla, escribe la fórmula y calcula las cuotas completas.</p>
+      </div>
+      <form class="calc-form" id="loan-form" novalidate>
+        <div class="form-grid form-grid--three">
+          <label class="form-field">
+            <span>Monto del crédito (C)</span>
+            <input type="number" id="l-amount" name="l-amount" placeholder="Ej. 50000" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Tasa de interés anual (%) (i)</span>
+            <input type="number" id="l-rate" name="l-rate" placeholder="Ej. 12" min="0" step="0.0001">
+          </label>
+          <label class="form-field">
+            <span>Tiempo en años (n)</span>
+            <input type="number" id="l-years" name="l-years" placeholder="Ej. 5" min="0" step="0.01">
+          </label>
+          <label class="form-field">
+            <span>Número de pagos por año (m)</span>
+            <input type="number" id="l-frequency" name="l-frequency" placeholder="Ej. 12" min="1" step="1">
+          </label>
+          <label class="form-field">
+            <span>Tipo de tabla</span>
+            <select id="l-method" name="l-method" required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="francesa">Francesa (cuota constante)</option>
+              <option value="alemana">Alemana (cuota decreciente)</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <span>Fórmula o referencia que vas a usar</span>
+            <input type="text" id="l-formula" name="l-formula" placeholder="Ej. Cuota = C * r / (1 - (1+r)^-N)" maxlength="90">
+          </label>
+        </div>
+        <p class="form-hint">Todos los valores deben ser numéricos, positivos y distintos de cero. La tasa se considera nominal anual y se divide entre los pagos por año.</p>
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Calcular tabla</button>
+          <button type="reset" class="btn btn--ghost" id="loan-reset">Limpiar</button>
+        </div>
+        <div class="feedback" id="loan-feedback" role="status" aria-live="polite"></div>
+      </form>
+
+      <div class="results" id="loan-results" hidden>
+        <div class="results__header">
+          <div>
+            <p class="eyebrow" id="loan-method-label"></p>
+            <h3 id="loan-summary"></h3>
+          </div>
+          <p class="results__note">Las cifras se redondean a dos decimales y se generan según la tabla seleccionada.</p>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table" aria-describedby="loan-summary">
+            <thead>
+              <tr>
+                <th>Pago</th>
+                <th>Cuota</th>
+                <th>Capital</th>
+                <th>Interés</th>
+                <th>Saldo</th>
+              </tr>
+            </thead>
+            <tbody id="loan-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Hecho para practicar cálculo de interés simple y compuesto.</p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
