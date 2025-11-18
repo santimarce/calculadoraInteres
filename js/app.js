@@ -33,12 +33,9 @@ function parsePositiveNumber(value) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
 }
 
-function validateFields({ capital, ratePercent, timeYears, interest, unknown, formula, userResult }) {
+function validateFields({ capital, ratePercent, timeYears, interest, unknown, userResult }) {
   if (!unknown) {
     return 'Selecciona la incógnita que deseas calcular.';
-  }
-  if (!formula.trim()) {
-    return 'Escribe la fórmula que vas a usar.';
   }
   if (userResult === null) {
     return 'Ingresa el valor que calculaste para la incógnita.';
@@ -79,10 +76,9 @@ function handleSubmit(event) {
   const timeYears = parsePositiveNumber(form.time.value);
   const interest = parsePositiveNumber(form.interest.value);
   const unknown = form.unknown.value;
-  const formula = form.formula.value || '';
   const userResult = parsePositiveNumber(form['user-result'].value);
 
-  const error = validateFields({ capital, ratePercent, timeYears, interest, unknown, formula, userResult });
+  const error = validateFields({ capital, ratePercent, timeYears, interest, unknown, userResult });
   if (error) {
     showFeedback(feedback, error, 'error');
     return;
