@@ -32,8 +32,7 @@
             <span class="card__tag">1</span>
             <h3>Calculadora de interés simple</h3>
           </div>
-          <p>Ingresa tus datos, selecciona la incógnita (C, i, n o I) y valida tu respuesta con el botón de evaluación.
-          </p>
+          <p>Ingresa tus datos, selecciona la incógnita (C, i, n o I) y valida tu respuesta con el botón de evaluación.</p>
           <a class="card__link" href="#calculadora">Probar ahora →</a>
         </article>
         <article class="card">
@@ -41,8 +40,7 @@
             <span class="card__tag">2</span>
             <h3>Calculadora de interés compuesto</h3>
           </div>
-          <p>Calcula C, i, n, M o I con capitalización m. Ingresa los datos, escribe la fórmula y verifica tu resultado.
-          </p>
+          <p>Calcula C, i, n, M o I con capitalización m. Ingresa los datos y verifica tu resultado.</p>
           <a class="card__link" href="#compuesto">Ir a la sección →</a>
         </article>
         <article class="card">
@@ -60,9 +58,9 @@
       <div class="section-header">
         <p class="eyebrow">Sección 1</p>
         <h2>Calcula cualquier incógnita de interés simple</h2>
-        <p class="section-description">Completa los campos conocidos, escribe la fórmula que usarás, indica la incógnita
-          que des
-          eas calcular y coloca tu resultado propuesto. Luego presiona el botón de evaluación para validar.</p>
+        <p class="section-description">Completa los campos conocidos, indica la incógnita que deseas calcular y coloca tu
+          resultado
+          propuesto. Luego presiona el botón de evaluación para validar.</p>
       </div>
       <form class="calc-form" id="interest-form" novalidate>
         <div class="form-grid">
@@ -92,10 +90,6 @@
               <option value="interest">Interés (I)</option>
             </select>
           </label>
-          <label class="form-field">
-            <span>Fórmula que vas a usar</span>
-            <input type="text" id="formula" name="formula" placeholder="Ej. I = C · i · n" maxlength="60">
-          </label>
           <label class="form-field form-field--full">
             <span>Tu resultado para la incógnita seleccionada</span>
             <input type="number" id="user-result" name="user-result" placeholder="Ingresa tu cálculo" min="0"
@@ -118,8 +112,7 @@
         <p class="eyebrow">Sección 2</p>
         <h2>Calcula cualquier incógnita de interés compuesto</h2>
         <p class="section-description">Ingresa los valores conocidos, selecciona la variable a resolver (C, i, n, M o
-          I), escribe
-          la fórmula y valida tu cálculo con el botón de evaluación.</p>
+          I) y valida tu cálculo con el botón de evaluación.</p>
       </div>
       <form class="calc-form" id="compound-form" novalidate>
         <div class="form-grid">
@@ -158,10 +151,6 @@
               <option value="interest">Interés (I)</option>
             </select>
           </label>
-          <label class="form-field">
-            <span>Fórmula que vas a usar</span>
-            <input type="text" id="c-formula" name="c-formula" placeholder="Ej. M = C (1  i/m)^(n·m)" maxlength="70">
-          </label>
           <label class="form-field form-field--full">
             <span>Tu resultado para la incógnita seleccionada</span>
             <input type="number" id="c-user-result" name="c-user-result" placeholder="Ingresa tu cálculo" min="0"
@@ -183,8 +172,8 @@
       <div class="section-header">
         <p class="eyebrow">Sección 3</p>
         <h2>Simula un crédito con tabla francesa o alemana</h2>
-        <p class="section-description">Ingresa el monto, tasa anual, duración y pagos por año. Elige la tabla, escribe
-          la fórmula y calcula las cuotas completas.</p>
+        <p class="section-description">Ingresa el monto, tasa anual, duración y pagos por año. Elige la tabla y calcula
+          las cuotas completas.</p>
       </div>
       <form class="calc-form" id="loan-form" novalidate>
         <div class="form-grid form-grid--three">
@@ -211,11 +200,6 @@
               <option value="francesa">Francesa (cuota constante)</option>
               <option value="alemana">Alemana (cuota decreciente)</option>
             </select>
-          </label>
-          <label class="form-field">
-            <span>Fórmula o referencia que vas a usar</span>
-            <input type="text" id="l-formula" name="l-formula" placeholder="Ej. Cuota = C * r / (1 - (1r)^-N)"
-              maxlength="90">
           </label>
         </div>
         <p class="form-hint">Todos los valores deben ser numéricos, positivos y distintos de cero. La tasa se considera
