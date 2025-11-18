@@ -183,8 +183,8 @@
       <div class="section-header">
         <p class="eyebrow">Sección 3</p>
         <h2>Simula un crédito con tabla francesa o alemana</h2>
-        <p class="section-description">Ingresa el monto, tasa anual, duración y pagos por año. Elige la tabla, escribe
-          la fórmula y calcula las cuotas completas.</p>
+        <p class="section-description">Ingresa el monto, tasa anual, duración y pagos por año. Elige la tabla y calcula
+          las cuotas completas.</p>
       </div>
       <form class="calc-form" id="loan-form" novalidate>
         <div class="form-grid form-grid--three">
@@ -211,11 +211,6 @@
               <option value="francesa">Francesa (cuota constante)</option>
               <option value="alemana">Alemana (cuota decreciente)</option>
             </select>
-          </label>
-          <label class="form-field">
-            <span>Fórmula o referencia que vas a usar</span>
-            <input type="text" id="l-formula" name="l-formula" placeholder="Ej. Cuota = C * r / (1 - (1r)^-N)"
-              maxlength="90">
           </label>
         </div>
         <p class="form-hint">Todos los valores deben ser numéricos, positivos y distintos de cero. La tasa se considera
